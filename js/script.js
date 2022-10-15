@@ -23,25 +23,24 @@ once again)*/
 });
 
 //get the design and color 'select' elements
-const design = document.getElementById("design");
-const color = document.getElementById("color");
+const shirtDesign = document.getElementById("design");
+const shirtColor = document.getElementById("color");
 
 //color field disabled by default when page loads
-color.disabled = true;
+shirtColor.disabled = true;
 
 //event listener (change) for when an item/option is selected from the design 'menu'/option list
-design.addEventListener("change", (e) => {
+shirtDesign.addEventListener("change", (e) => {
   //color field disabled on page load
-  color.disabled = false;
+  shirtColor.disabled = false;
 
   //point 5 of guide
   /*Also in the event listener, loop over the option element children of the 
   "Color" <select> element. The children property will be helpful here.*/
-  for (let i = 0; i < color.length; i++) {
-    let designOption = e.target.value;
-    let dataTheme = color[i].getAttribute("data-theme");
+  for (let i = 0; i < shirtColor.length; i++) {
+    let shirtDesignValue = e.target.value;
+    let shirtDataTheme = shirtColor[i].getAttribute("data-theme");
 
-    //think the below logic needs some work. When flipping between, doesn't change default value;
     //point 8 of guide - needs work, not sure if 100% correct
     /*Still in the loop, create a conditional that checks if the two variables that were 
 just created are equal to one another. If they are, set the hidden property of the loop’s 
@@ -49,40 +48,43 @@ current option element to false, and set the selected attribute of the loop’s 
 option element to true. And if the two variables are not equal to one another, set the hidden 
 property of the loop’s current option element to true, and set the selected attribute of the 
 loop’s current option element to false.*/
-    if (designOption !== dataTheme) {
-      color.children[i].hidden = true;
-      color.children[0].selected = false;
-      color.children[0].text = "Select Shirt Colour"; //not sure if necessary/correct
-    } else if (designOption === dataTheme) {
-      color.children[i].hidden = false;
-      color.children[0].selected = true;
-      color.children[0].text = "Select Shirt Colour"; //not sure if necessary/correct
+    if (shirtDesignValue !== shirtDataTheme) {
+      shirtColor.children[i].hidden = true;
+      /* ATTRIBUTION for the regex format (  / *\([^)]*\) * /g, "") to thejh, dated 27 Nov 2010
+      https://stackoverflow.com/questions/4292468/javascript-regex-remove-text-between-parentheses 
+      (and again, a few lines below) */
+      shirtColor.children[i].text = shirtColor.children[i].text.replace(  / *\([^)]*\) */g, "");
+      shirtColor.firstElementChild.selected = true;
+      shirtColor.children[0].text = "Select Shirt Colour";
+    } else if (shirtDesignValue === shirtDataTheme) {
+        shirtColor.children[i].hidden = false;
+        shirtColor.children[i].text = shirtColor.children[i].text.replace(  / *\([^)]*\) */g, "");
+        shirtColor.firstElementChild.selected = true;
+        shirtColor.children[0].text = "Select Shirt Colour";
     }
   }
 });
 
-//6. "Register for Activities" section (update comment at a later stage):
-
 //TODO: Make the variables 'friendlier' and easier to place/read for the code.
 
-const regForActivities = document.getElementById("activities");
-const costActivities = document.getElementById("activities-cost");
-let totalCostActivities = 0;
+const activities = document.getElementById("activities");
+const activitiesCost = document.getElementById("activities-cost");
+let activitiesTotalCost = 0;
 
-regForActivities.addEventListener("change", (e) => {
+activities.addEventListener("change", (e) => {
   //variable to hold the cost of the selected element (converted to number thanks to '+')
-  const dataCost = +e.target.getAttribute("data-cost");
+  const activitySelectedCost = +e.target.getAttribute("data-cost");
 
-  /*if the target is checked, add the cost to the totalCostActivities variable. 
+  /*if the target is checked, add the cost to the activitiesTotalCost variable. 
     If unchecked, reduce by the amount of that element*/
   if (e.target.checked) {
-    totalCostActivities += dataCost;
+    activitiesTotalCost += activitySelectedCost;
   }
   if (e.target.checked === false) {
-    totalCostActivities -= dataCost;
+    activitiesTotalCost -= activitySelectedCost;
   }
-  //Update the <p> "activities-cost" value with the total selected activities cost (totalCostActivities)
-  costActivities.innerHTML = `Total: $${totalCostActivities}`;
+  //Update the <p> "activities-cost" value with the total selected activities cost (activitiesTotalCost)
+  activitiesCost.innerHTML = `Total: $${activitiesTotalCost}`;
 });
 
 //7. "Payment Info" section (update comment at a later stage):
@@ -93,7 +95,7 @@ const creditCard = document.getElementById("credit-card");
 const paypal = document.getElementById("paypal");
 const bitcoin = document.getElementById("bitcoin");
 
-//hide paypal and bitcoin when page loads, as credit card will be loaded by default.
+//hide paypal and bitcoin when page loads, as credit card will be loaded and selected by default.
 paypal.hidden = true;
 bitcoin.hidden = true;
 
@@ -136,7 +138,7 @@ paymentType.addEventListener("change", (e) => {
 // The "Email Address" <input type="text"> element
 const email = document.getElementById("email");
 // The "Register for Activities" <fieldset> element (should already have a variable)
-//regForActivities
+//activities
 // The "Card number" <input type="text"> element
 const cardNumber = document.getElementById("cc-num");
 // The "Zip code" <input type="text"> element
@@ -163,43 +165,22 @@ helper functions for each required field that can then be called in the event li
 the testing and return true or false depending on whether the field is valid or not.
 TO DO / UDPATE / IMPROVE */
 
-  //remove the console.log(s) once finished with testing.
-
   //name regex - code structure taken from the 'warm-up' projects.
   const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameValue);
-  console.log(
-    `Name validation test on "${nameValue}" evaluates to ${nameIsValid}`
-  );
-
   //email regex - code structure taken from the 'warm-up' projects.
   const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
-  console.log(
-    `Name validation test on "${emailValue}" evaluates to ${emailIsValid}`
-  );
-
   //card number regex
   const cardNumberIsValid = /^\d{13,16}$/.test(cardNumberValue);
-  console.log(
-    `Name validation test on "${cardNumberValue}" evaluates to ${cardNumberIsValid}`
-  );
-
   //Zipcode regex
   const zipCodeIsValid = /^\d{5}$/.test(zipCodeValue);
-  console.log(
-    `Name validation test on "${zipCodeValue}" evaluates to ${zipCodeIsValid}`
-  );
-
   //CVV regex
   const cvvIsValid = /^\d{3}$/.test(cvvValue);
-  console.log(
-    `Name validation test on "${cvvValue}" evaluates to ${cvvIsValid}`
-  );
 
   /*if any of the field inputs are invalid, do not allow submission of form.
 I assume this will need to be reworked.
 credit card fields should only be validated if "credit card" is the selected payment method.*/
 
-//functions to assist with the repeat-nature of the code in the 'if statements'
+//functions to assist with the repeat-nature of the code in the 'if statements' below.
   function notValid(field) {
     field.parentElement.classList.add("not-valid");
     field.parentElement.lastElementChild.style.display = 'block';
