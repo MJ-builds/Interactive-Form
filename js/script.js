@@ -10,7 +10,6 @@ const jobRoleField = document.getElementById("title");
 /*Event listener whereby when a "change" is detected, use a conditional statement 
 to check the value property of the element. */
 jobRoleField.addEventListener("change", (e) => {
-
   /*In the conditional, if the value of the event target is equal to "other", 
 display the “Other job role” field. And if the value any of the other options, hide it.
 Have also included a wipe of the value of the other field (if the user selects a different drop-down
@@ -72,7 +71,7 @@ let totalCostActivities = 0;
 
 regForActivities.addEventListener("change", (e) => {
   //variable to hold the cost of the selected element (converted to number thanks to '+')
-  dataCost = +e.target.getAttribute("data-cost");
+  const dataCost = +e.target.getAttribute("data-cost");
 
   /*if the target is checked, add the cost to the totalCostActivities variable. 
     If unchecked, reduce by the amount of that element*/
@@ -147,40 +146,112 @@ const cvv = document.getElementById("cvv");
 // The <form> element
 const form = document.querySelector("form");
 
-//Use the "form" variable to listen for the submit event.
+//Use the "form" variable to listen for the keyup event.
 form.addEventListener("submit", (e) => {
-
-/*Inside the event listener, use the name variable, dot notation 
+  /*Inside the event listener, use the name variable, dot notation 
 and the value property to create a new variable that references the value 
 of the different fields.*/
-const nameValue = nameField.value;
-const emailValue = email.value;
-const cardNumberValue = cardNumber.value;
-const zipCodeValue = zipCode.value;
-const cvvValue = cvv.value;
+  const nameValue = nameField.value;
+  const emailValue = email.value;
+  const cardNumberValue = cardNumber.value;
+  const zipCodeValue = zipCode.value;
+  const cvvValue = cvv.value;
 
-//name regex - code structure taken from the 'warm-up' projects.
-const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameValue);
-console.log(`Name validation test on "${nameValue}" evaluates to ${nameIsValid}`);
+  /* Note from guide: Inside the event listener is ultimately where the required fields or sections 
+will be tested. But rather than creating all the tests there, it can be helpful to create 
+helper functions for each required field that can then be called in the event listener to do 
+the testing and return true or false depending on whether the field is valid or not.
+TO DO / UDPATE / IMPROVE */
 
-//email regex - code structure taken from the 'warm-up' projects.
-const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
-console.log(`Name validation test on "${emailValue}" evaluates to ${emailIsValid}`);
+  //remove the console.log(s) once finished with testing.
 
-//card number regex
-const cardNumberIsValid = /^\d{13,16}$/.test(cardNumberValue);
-console.log(`Name validation test on "${cardNumberValue}" evaluates to ${cardNumberIsValid}`);
+  //name regex - code structure taken from the 'warm-up' projects.
+  const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameValue);
+  console.log(
+    `Name validation test on "${nameValue}" evaluates to ${nameIsValid}`
+  );
 
-//Zipcode regex
-const zipCodeIsValid = /^\d{5}$/.test(zipCodeValue);
-console.log(`Name validation test on "${zipCodeValue}" evaluates to ${zipCodeIsValid}`);
+  //email regex - code structure taken from the 'warm-up' projects.
+  const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
+  console.log(
+    `Name validation test on "${emailValue}" evaluates to ${emailIsValid}`
+  );
 
-//CVV regex
-const cvvIsValid = /^\d{3}$/.test(cvvValue);
-console.log(`Name validation test on "${cvvValue}" evaluates to ${cvvIsValid}`);
+  //card number regex
+  const cardNumberIsValid = /^\d{13,16}$/.test(cardNumberValue);
+  console.log(
+    `Name validation test on "${cardNumberValue}" evaluates to ${cardNumberIsValid}`
+  );
 
-/*Add a temporary event.preventDefault() statement to prevent the form 
-from refreshing when the submit button is clicked.*/
-e.preventDefault(); // 
+  //Zipcode regex
+  const zipCodeIsValid = /^\d{5}$/.test(zipCodeValue);
+  console.log(
+    `Name validation test on "${zipCodeValue}" evaluates to ${zipCodeIsValid}`
+  );
 
+  //CVV regex
+  const cvvIsValid = /^\d{3}$/.test(cvvValue);
+  console.log(
+    `Name validation test on "${cvvValue}" evaluates to ${cvvIsValid}`
+  );
+
+  /*if any of the field inputs are invalid, do not allow submission of form.
+I assume this will need to be reworked.
+credit card fields should only be validated if "credit card" is the selected payment method.*/
+
+//functions to assist with the repeat-nature of the code in the 'if statements'
+  function notValid(field) {
+    field.parentElement.classList.add("not-valid");
+    field.parentElement.lastElementChild.style.display = 'block';
+    e.preventDefault();
+  }
+  function valid(field) {
+    field.parentElement.classList.remove("not-valid");
+    field.parentElement.classList.add("valid");
+    field.parentElement.lastElementChild.style.display = 'none';
+  }
+//if any of the fields regex tests come back as 'false', utilise notValid func above, else valid func.
+  if (!nameIsValid) {
+    notValid(nameField);
+  } else {
+    valid(nameField);
+  }
+  if (!emailIsValid) {
+    notValid(email);
+  } else {
+    valid(email);
+  }
+  if (!cardNumberIsValid && creditCard.hidden == false) {
+    notValid(cardNumber);
+  } else {
+    valid(cardNumber);
+  }
+  if (!zipCodeIsValid && creditCard.hidden == false) {
+    notValid(zipCode);
+  } else {
+    valid(zipCode);
+  }
+  if (!cvvIsValid && creditCard.hidden == false) {
+    notValid(cvv);
+  } else {
+    valid(cvv);
+  }
+});
+
+const checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+//Received assistance here through the pratice workbooks. To clean up.
+checkboxes.forEach((cb) => {
+  //for the current checkbox in checkboxes selected, add a focus class
+  cb.addEventListener("focus", (e) => {
+    cb.parentElement.classList.add("focus");
+  });
+
+  //when a different checkbox is selected, remove the previous focus class from this element
+  cb.addEventListener("blur", (e) => {
+    const active = document.querySelector(".focus");
+    if (active) {
+      active.classList.remove("focus");
+    }
+  });
 });
