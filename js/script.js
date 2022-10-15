@@ -38,7 +38,7 @@ design.addEventListener("change", (e) => {
   //point 5 of guide
   /*Also in the event listener, loop over the option element children of the 
   "Color" <select> element. The children property will be helpful here.*/
-  for (let i = 0; i < color.children.length; i++) {
+  for (let i = 0; i < color.length; i++) {
     let designOption = e.target.value;
     let dataTheme = color[i].getAttribute("data-theme");
 
@@ -62,3 +62,12 @@ loop’s current option element to false.*/
 
   }
 });
+
+//6. "Register for Activities" section (update comment at a later stage):
+
+const regActivities = document.getElementById("activities");
+const costActivities = document.getElementById("activities-cost");
+const totalCostActivities = 0;
+//for testing
+console.log(regActivities);
+console.log(costActivities);
