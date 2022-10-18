@@ -1,4 +1,8 @@
-//Interactive Form with various functionality and field validation.
+/*****************************************************************************
+Treehouse FSJS Techdegree:
+Project 3 - Interactive Form
+Interactive Form with various functionality and field validation.
+******************************************/
 
 const nameField = document.getElementById("name");
 nameField.focus();
