@@ -469,7 +469,7 @@ button:hover {
 ==================================== */
 
 .focus {
-  background: rgba(255, 255, 255, 1) !important;
+  background: rgba(20, 168, 4, 0.723) !important;
   border-color:  rgb(9, 73, 250) !important;
 }
 
