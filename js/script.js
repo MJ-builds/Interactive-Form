@@ -147,14 +147,78 @@ checkboxes.forEach((cb) => {
   });
 });
 
-form.addEventListener("submit", (e) => { //----------------------------------------------
-//create a new variable that references the value of the different fields.
+  //helper functions to assist with conditionals for field validation
+  function valid(field) {
+   field.parentElement.classList.remove("not-valid");
+   field.parentElement.classList.add("valid");
+   field.parentElement.lastElementChild.style.display = "none";
+ }
+ function notValid(field) {
+   field.parentElement.classList.add("not-valid");
+   field.parentElement.lastElementChild.style.display = "block";
+//e.preventDefaul();
+ }
+ function validity (test,element,e) {
+  if (!test(e.target.value)) {
+    notValid(element);
+  } else {
+    valid(element);
+  }
+ }
+
+nameField.addEventListener("input", (e) => {
+
+  function isValidName(name) {
+    return /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(name);
+  }
+  validity(isValidName,nameField,e);
+});
+email.addEventListener("input", (e) => {
+
+  function isValidEmail(email) {
+    return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+  }
+  validity(isValidEmail,email,e);
+});
+cardNumber.addEventListener("input", (e) => {
+
+  function isValidCardNumber(card) {
+    return /^\d{13,16}$/.test(card);
+  }
+  validity(isValidCardNumber,cardNumber,e);
+});
+zipCode.addEventListener("input", (e) => {
+
+  function isValidZipCode(zipcode) {
+    return /^\d{5}$/.test(zipcode);
+  }
+  validity(isValidZipCode,zipCode,e);
+});
+cvv.addEventListener("input", (e) => {
+
+  function isValidCvv(cvv) {
+    return /^\d{3}$/.test(cvv);
+  }
+  validity(isValidCvv,cvv,e);
+});
+activities.addEventListener("change", (e) => {
+
+  if(activitiesTotalCost === 0) {
+    e.preventDefault();
+    activities.lastElementChild.style.display = "block";
+  } else {
+    activities.lastElementChild.style.display = "none";
+  }
+});
+
+form.addEventListener("submit", (e) => {
+
+  //create a new variable that references the value of the different fields.
   const nameValue = nameField.value;
   const emailValue = email.value;
   const cardNumberValue = cardNumber.value;
   const zipCodeValue = zipCode.value;
   const cvvValue = cvv.value;
-
   //Regex for various form fields
   const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameValue);
   const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
@@ -162,47 +226,21 @@ form.addEventListener("submit", (e) => { //-------------------------------------
   const zipCodeIsValid = /^\d{5}$/.test(zipCodeValue);
   const cvvIsValid = /^\d{3}$/.test(cvvValue);
 
-  //helper functions to assist with conditionals for field validation
-  function valid(field) {
-    field.parentElement.classList.remove("not-valid");
-    field.parentElement.classList.add("valid");
-    field.parentElement.lastElementChild.style.display = "none";
-  }
-  function notValid(field) {
-    field.parentElement.classList.add("not-valid");
-    field.parentElement.lastElementChild.style.display = "block";
-    e.preventDefault();
-  }
+  function testValidSubmission (){
 
-  // ----------------------------------------------- new code
-//   function isValidName(name) {
-//     return /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(name);
-//   }
+    if (!nameIsValid || !emailIsValid || (!cardNumberIsValid && creditCard.hidden == false) 
+    || (!zipCodeIsValid && creditCard.hidden == false) 
+       || (!cvvIsValid && creditCard.hidden == false) || activitiesTotalCost === 0) {
+      e.preventDefault();
+    }  else
+    e.submit();
+    }
+    testValidSubmission();
 
-//   function showOrHideTip(show, element) {
-//     // show element when show is true, hide when false
-//     if (show) {
-//       element.style.display = "inherit";
-//     } else {
-//       element.style.display = "none";
-//     }
-//   }
-
-//   function createListener (validator) {
-//     return e => {
-//     const value = e.target.value;
-//     const valid = validator(value); 
-//     const showTip = value !== "" && !valid;
-//     const tooltip = e.target.nextElementSibling;
-// showOrHideTip(showTip,tooltip);
-//     };
-// }
-//nameField.addEventListener("input", createListener(isValidName));
-// ------------------------------------------------ new code
-
-  //if any of the fields regex tests come back as 'false' = notValid, else valid function
+  // //if any of the fields regex tests come back as 'false' = notValid, else valid function
   if (!nameIsValid) {
     notValid(nameField);
+    e.preventDefault();
   } else {
     valid(nameField);
   }
