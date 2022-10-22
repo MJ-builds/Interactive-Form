@@ -13,6 +13,30 @@ otherRoleField.style.display = "none";
 
 const jobRoleField = document.getElementById("title");
 
+//get the design and color 'select' elements
+const shirtDesign = document.getElementById("design");
+const shirtColor = document.getElementById("color");
+
+//payments section declarations
+const paymentType = document.getElementById("payment");
+const creditCard = document.getElementById("credit-card");
+const paypal = document.getElementById("paypal");
+const bitcoin = document.getElementById("bitcoin");
+
+//activities declarations
+const activities = document.getElementById("activities");
+const activitiesCost = document.getElementById("activities-cost");
+let activitiesTotalCost = 0;
+
+const checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+//form validation declarations
+const email = document.getElementById("email");
+const cardNumber = document.getElementById("cc-num");
+const zipCode = document.getElementById("zip");
+const cvv = document.getElementById("cvv");
+const form = document.querySelector("form");
+
 jobRoleField.addEventListener("change", (e) => {
   /*In the conditional, if the value of the event target is equal to "other", 
 display the “Other job role” field. And if the value any of the other options, hide it.*/
@@ -23,11 +47,6 @@ display the “Other job role” field. And if the value any of the other option
     otherRoleField.style.display = "none";
   }
 });
-
-//get the design and color 'select' elements
-const shirtDesign = document.getElementById("design");
-const shirtColor = document.getElementById("color");
-
 //color field disabled by default when page loads
 shirtColor.disabled = true;
 
@@ -51,10 +70,7 @@ https://stackoverflow.com/questions/4292468/javascript-regex-remove-text-between
         / *\([^)]*\) */g,
         ""
       );
-      item.firstElementChild.selected = true;
-      item.children[0].text = "Select Shirt Colour";
     }
-
     /* checks if the two variables that were just created are equal to one another. 
     If yes, set hidden property of the loop’s current option element to false, and set 
     the selected attribute of the loop’s current option element to true. And visa versa.*/
@@ -62,13 +78,10 @@ https://stackoverflow.com/questions/4292468/javascript-regex-remove-text-between
       showHideShirts(true, shirtColor, i);
     } else if (shirtDesignValue === shirtDataTheme) {
       showHideShirts(false, shirtColor, i);
+      shirtColor.selectedIndex = i-2;
     }
   }
 });
-
-const activities = document.getElementById("activities");
-const activitiesCost = document.getElementById("activities-cost");
-let activitiesTotalCost = 0;
 
 activities.addEventListener("change", (e) => {
   //variable to hold the cost of the selected element (converted to number thanks to '+')
@@ -85,12 +98,6 @@ activities.addEventListener("change", (e) => {
   //Update the <p> "activities-cost" value with the total selected activities cost (activitiesTotalCost)
   activitiesCost.innerHTML = `Total: $${activitiesTotalCost}`;
 });
-
-//create variables to use for the payments section
-const paymentType = document.getElementById("payment");
-const creditCard = document.getElementById("credit-card");
-const paypal = document.getElementById("paypal");
-const bitcoin = document.getElementById("bitcoin");
 
 //hide paypal and bitcoin when page loads (credit card is loaded and selected by default).
 paypal.hidden = true;
@@ -125,9 +132,6 @@ paymentType.addEventListener("change", (e) => {
 });
 
 // the below code make the focus states of the different activities more obvious to all users. 
-
-const checkboxes = document.querySelectorAll("input[type=checkbox]");
-
 checkboxes.forEach((cb) => {
   //for the current checkbox in checkboxes selected, add a focus class
   cb.addEventListener("focus", (e) => {
@@ -143,14 +147,7 @@ checkboxes.forEach((cb) => {
   });
 });
 
-//declaring variables for form validation section
-const email = document.getElementById("email");
-const cardNumber = document.getElementById("cc-num");
-const zipCode = document.getElementById("zip");
-const cvv = document.getElementById("cvv");
-const form = document.querySelector("form");
-
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", (e) => { //----------------------------------------------
 //create a new variable that references the value of the different fields.
   const nameValue = nameField.value;
   const emailValue = email.value;
@@ -176,6 +173,32 @@ form.addEventListener("submit", (e) => {
     field.parentElement.lastElementChild.style.display = "block";
     e.preventDefault();
   }
+
+  // ----------------------------------------------- new code
+//   function isValidName(name) {
+//     return /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(name);
+//   }
+
+//   function showOrHideTip(show, element) {
+//     // show element when show is true, hide when false
+//     if (show) {
+//       element.style.display = "inherit";
+//     } else {
+//       element.style.display = "none";
+//     }
+//   }
+
+//   function createListener (validator) {
+//     return e => {
+//     const value = e.target.value;
+//     const valid = validator(value); 
+//     const showTip = value !== "" && !valid;
+//     const tooltip = e.target.nextElementSibling;
+// showOrHideTip(showTip,tooltip);
+//     };
+// }
+//nameField.addEventListener("input", createListener(isValidName));
+// ------------------------------------------------ new code
 
   //if any of the fields regex tests come back as 'false' = notValid, else valid function
   if (!nameIsValid) {
@@ -203,4 +226,10 @@ form.addEventListener("submit", (e) => {
   } else {
     valid(cvv);
   }
-});
+  if(activitiesTotalCost === 0) {
+    e.preventDefault();
+    activities.lastElementChild.style.display = "block";
+  } else {
+    activities.lastElementChild.style.display = "none";
+  }
+}); //------------------------------------------------------------------------------
