@@ -75,7 +75,7 @@ https://stackoverflow.com/questions/4292468/javascript-regex-remove-text-between
     }
   }
 });
-
+//event listener to listen for a change regarding the checkbox (tick or untick)
 activities.addEventListener("change", (e) => {
   //variable to hold the cost of the selected element (converted to number thanks to '+')
   const activitySelectedCost = +e.target.getAttribute("data-cost");
@@ -104,7 +104,7 @@ paymentType.setAttribute("value", paymentType.children[1].value);
 /*event listener to identify changes to selection of the payment method, and display the correct 
 div (credit card, paypal or bitcoin) accordingly */
 paymentType.addEventListener("change", (e) => {
-  
+
   function showHidePaymentType(creditBool, bitcoinBool, paypalBool, arr) {
     creditCard.hidden = creditBool;
     bitcoin.hidden = bitcoinBool;
@@ -127,7 +127,6 @@ checkboxes.forEach((cb) => {
   cb.addEventListener("focus", (e) => {
     cb.parentElement.classList.add("focus");
   });
-
   //when a different checkbox is selected, remove the previous focus class from this element
   cb.addEventListener("blur", (e) => {
     const active = document.querySelector(".focus");
@@ -136,7 +135,6 @@ checkboxes.forEach((cb) => {
     }
   });
 });
-
 //helper functions to assist with conditionals for field validation
 function valid(field) {
   field.parentElement.classList.remove("not-valid");
@@ -198,8 +196,7 @@ form.addEventListener("submit", (e) => {
           valid(element);
         }
       }
-    }
-
+  }
   validitySubmitListener(isValidName, nameField);
   validitySubmitListener(isValidEmail, email);
   validitySubmitListener(isValidCardNumber, cardNumber, creditCard);
