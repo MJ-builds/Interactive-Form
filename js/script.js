@@ -167,8 +167,7 @@ email.addEventListener("input", (e) => { validityListener(isValidEmail, email, e
 cardNumber.addEventListener("input", (e) => { validityListener(isValidCardNumber, cardNumber, e);});
 zipCode.addEventListener("input", (e) => { validityListener(isValidZipCode, zipCode, e); });
 cvv.addEventListener("input", (e) => { validityListener(isValidCvv, cvv, e); });
-activities.addEventListener("change", (e) => {
-  if (activitiesTotalCost === 0) {
+activities.addEventListener("change", (e) => { if (activitiesTotalCost === 0) {
     e.preventDefault();
     activities.lastElementChild.style.display = "block";
   } else {
