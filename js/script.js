@@ -80,35 +80,6 @@ activities.addEventListener("change", (e) => {
   //variable to hold the cost of the selected element (converted to number thanks to '+')
   const activitySelectedCost = +e.target.getAttribute("data-cost");
 
-//--------------------
-//clean the below up and create functions (but FINALLY working...)
-
-const cBox = document.querySelectorAll("input[type=checkbox]"); 
-
-var cb1 = e.target.getAttribute("data-day-and-time");
-
-cBox.forEach(cb => {
-
-if(e.target.checked && e.target.getAttribute("data-day-and-time") == cb.getAttribute("data-day-and-time")) {
-
-cb.parentElement.classList.add("disabled");
-cb.classList.add("disabled");
-cb.disabled = true;
-e.target.classList.remove("disabled");
-e.target.parentElement.classList.remove("disabled");
-e.target.disabled = false;
-e.target.parentElement.classList.add("focus");
-
-} else if (!e.target.checked) {
-cb.parentElement.classList.remove("disabled");
-cb.classList.remove("disabled");  
-e.target.classList.remove("disabled");
-e.target.parentElement.classList.remove("disabled");
-cb.disabled = false;
-}
-});
-//---------------------
-
   /*if the target is checked, add the cost to the activitiesTotalCost variable. 
     If unchecked, reduce by the amount of that element*/
   if (e.target.checked) {
@@ -164,6 +135,7 @@ checkboxes.forEach((cb) => {
     }
   });
 });
+
 //helper functions to assist with conditionals for field validation
 function valid(field) {
   field.parentElement.classList.remove("not-valid");
@@ -171,14 +143,13 @@ function valid(field) {
   field.parentElement.lastElementChild.style.display = "none";
 }
 function notValid(field) {
+
   field.parentElement.classList.add("not-valid");
   field.parentElement.lastElementChild.style.display = "block";
-  //e.preventDefaul();
 }
 function validityListener(test, element, e) {
   if (!test(e.target.value)) {
     notValid(element);
-    //e.preventDefault();
   } else {
     valid(element);
   }
@@ -217,7 +188,7 @@ form.addEventListener("submit", (e) => {
       }
     }
       else if (creditConditional != undefined) {
-        if (!test(element.value) && optionalCondition.hidden == false) {
+        if (!test(element.value) && creditConditional.hidden == false) {
           notValid(element);
           e.preventDefault();
         } else {
@@ -236,4 +207,4 @@ form.addEventListener("submit", (e) => {
   } else {
     activities.lastElementChild.style.display = "none";
   }
-}); //------------------------------------------------------------------------------
+});
