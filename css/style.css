@@ -469,14 +469,15 @@ button:hover {
 ==================================== */
 
 .focus {
-  background: rgba(20, 168, 4, 0.723) !important;
+  background: rgba(226, 80, 8, 0.784) !important;
   border-color:  rgb(9, 73, 250) !important;
 }
 
 .disabled {
   cursor: not-allowed !important;
-  background: rgba(197, 163, 175, 0.1) !important;
+  background: rgba(4, 4, 4, 0.051) !important;
 }
+
 
 /* ================================= 
   Media queries styles
