@@ -80,6 +80,35 @@ activities.addEventListener("change", (e) => {
   //variable to hold the cost of the selected element (converted to number thanks to '+')
   const activitySelectedCost = +e.target.getAttribute("data-cost");
 
+//--------------------
+//clean the below up and create functions (but FINALLY working...)
+
+const cBox = document.querySelectorAll("input[type=checkbox]"); 
+
+var cb1 = e.target.getAttribute("data-day-and-time");
+
+cBox.forEach(cb => {
+
+if(e.target.checked && e.target.getAttribute("data-day-and-time") == cb.getAttribute("data-day-and-time")) {
+
+cb.parentElement.classList.add("disabled");
+cb.classList.add("disabled");
+cb.disabled = true;
+e.target.classList.remove("disabled");
+e.target.parentElement.classList.remove("disabled");
+e.target.disabled = false;
+e.target.parentElement.classList.add("focus");
+
+} else if (!e.target.checked) {
+cb.parentElement.classList.remove("disabled");
+cb.classList.remove("disabled");  
+e.target.classList.remove("disabled");
+e.target.parentElement.classList.remove("disabled");
+cb.disabled = false;
+}
+});
+//---------------------
+
   /*if the target is checked, add the cost to the activitiesTotalCost variable. 
     If unchecked, reduce by the amount of that element*/
   if (e.target.checked) {
@@ -178,8 +207,8 @@ activities.addEventListener("change", (e) => { if (activitiesTotalCost === 0) {
   from submitting, but if all form field entries are valid, then submit form */
 form.addEventListener("submit", (e) => {
 //Helper function to reduce repeat code
-  function validitySubmitListener(test, element, optionalCondition) {
-    if (optionalCondition == undefined) {
+  function validitySubmitListener(test, element, creditConditional) {
+    if (creditConditional == undefined) {
       if (!test(element.value)) {
         notValid(element);
         e.preventDefault();
@@ -187,7 +216,7 @@ form.addEventListener("submit", (e) => {
         valid(element);
       }
     }
-      else if (optionalCondition != undefined) {
+      else if (creditConditional != undefined) {
         if (!test(element.value) && optionalCondition.hidden == false) {
           notValid(element);
           e.preventDefault();
