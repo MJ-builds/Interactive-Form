@@ -169,8 +169,11 @@ zipCode.addEventListener("input", (e) => { validityListener(isValidZipCode, zipC
 cvv.addEventListener("input", (e) => { validityListener(isValidCvv, cvv, e); });
 activities.addEventListener("change", (e) => { if (activitiesTotalCost === 0) {
     e.preventDefault();
+    activities.classList.add("not-valid");
     activities.lastElementChild.style.display = "block";
   } else {
+    activities.classList.remove("not-valid");
+    activities.classList.add("valid");
     activities.lastElementChild.style.display = "none";
   }
 });
@@ -203,8 +206,11 @@ form.addEventListener("submit", (e) => {
   validitySubmitListener(isValidCvv, cvv, creditCard);
   if (activitiesTotalCost === 0) {
     e.preventDefault();
+    activities.classList.add("not-valid");
     activities.lastElementChild.style.display = "block";
   } else {
+    activities.classList.remove("not-valid");
+    activities.classList.add("valid");
     activities.lastElementChild.style.display = "none";
   }
 });
